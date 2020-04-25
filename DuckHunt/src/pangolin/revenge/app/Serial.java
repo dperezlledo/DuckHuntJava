@@ -40,7 +40,7 @@ public class Serial {
             };
             ino.arduinoRXTX("COM5", 9600, listener);
         } catch (ArduinoException ex) {
-            Logger.getLogger(JavaRXTX.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Serial.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -48,7 +48,7 @@ public class Serial {
         try {
             ino.sendData(msg+"");
         } catch (ArduinoException | SerialPortException ex) {
-            Logger.getLogger(JavaRXTX.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Serial.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

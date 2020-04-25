@@ -27,7 +27,7 @@ public class VCalibracion extends javax.swing.JFrame implements Runnable {
     public VCalibracion() {
         initComponents();
         setTitle("Calibración de los colores");
-        ImageIcon ImageIcon = new ImageIcon(getClass().getResource("/pangolin/revenge/res/gfx/icons8-gun-16.png"));
+        ImageIcon ImageIcon = new ImageIcon(getClass().getResource("/pangolin/revenge/res/gfx/icons8-gun-30.png"));
         Image Image = ImageIcon.getImage();
         this.setIconImage(Image);
         setExtendedState(JFrame.MAXIMIZED_BOTH);        
@@ -60,40 +60,7 @@ public class VCalibracion extends javax.swing.JFrame implements Runnable {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(VCalibracion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(VCalibracion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(VCalibracion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(VCalibracion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new VCalibracion().setVisible(true);
-            }
-        });
-    }
+   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
@@ -108,25 +75,26 @@ public class VCalibracion extends javax.swing.JFrame implements Runnable {
             Thread.sleep(2000);
             usb = new Serial();
             do {
-                JOptionPane.showMessageDialog(this, "Realice hasta el siguiente mensaje, pequeños circulos sobre el color"
-                        + " Negro a una distancia entre 5 y 10 cm", "NEGRO", JOptionPane.WARNING_MESSAGE);                
+                JOptionPane.showMessageDialog(this, "Realice durante 5 segundos, pequeños circulos sobre el color"
+                        + " NEGRO a una distancia entre 5 y 10 cm", "Calibrando color NEGRO", JOptionPane.WARNING_MESSAGE);                
                 usb.sendData(1); //Enviar mensaje a Arduino
-                Thread.sleep(12000); // Esperamos a que arduino coja datos
+                Thread.sleep(6000); // Esperamos a que arduino coja datos
                
-                JOptionPane.showMessageDialog(this, "Ahora realice la misma operacion durante 10 seg, sobre el color"
-                        + " BLANCO a una distancia entre 5 y 10 cm", "BLANCO", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Ahora realice la misma operación, sobre el color"
+                        + " BLANCO a una distancia entre 5 y 10 cm", "Calibrando color BLANCO", JOptionPane.WARNING_MESSAGE);
                 usb.sendData(2); //Enviar mensaje a Arduino
-                Thread.sleep(12000);
+                Thread.sleep(6000);
                 msg=usb.receiveData();
                 System.out.println(""+ msg);
                 if (msg.equals("CER")) { // No se calibró correctamente
                     JOptionPane.showMessageDialog(this, "Calibración incorrecta, se repetirá el proceso", "Error", JOptionPane.ERROR_MESSAGE);
-                }                
+                }             
             } while (msg.equals("CER"));
+           
             JOptionPane.showMessageDialog(this, "La calibración se ha realizado de forma correcta. \nPulse "
-                    + "Aceptar para empezar el juego", "Inicio del Juego", JOptionPane.INFORMATION_MESSAGE);
+                    + "Aceptar para empezar el juego. \nResultado " + msg, "Inicio del Juego", JOptionPane.INFORMATION_MESSAGE);
             setVisible(false);
-            VPrincipal vp = new VPrincipal();
+            VPrincipal vp = new VPrincipal(usb);
             //System.exit(0);
         } catch (InterruptedException ex) {
             Logger.getLogger(VCalibracion.class.getName()).log(Level.SEVERE, null, ex);
